@@ -4,7 +4,7 @@ const db = require('../dbConfig')
 
 router.get('/', async(req,res,next)=>{
     try{
-        res.json(await db('users'))
+        res.json(await db('recipes'))
     }
     catch(err){
         next(err)
