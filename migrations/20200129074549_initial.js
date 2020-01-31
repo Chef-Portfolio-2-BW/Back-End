@@ -4,6 +4,7 @@ exports.up = async function(knex) {
         tbl.increments()
         tbl.string('username').unique()
         tbl.string('password').notNullable()
+        tbl.string('email').notNullable().unique()
     })
 
     await knex.schema.createTable('ingredients', tbl=>{
@@ -32,6 +33,7 @@ exports.up = async function(knex) {
             .notNullable()
             .references('id')
             .inTable('meal')
+        tbl.string('img')
         
     })
 
