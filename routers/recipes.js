@@ -23,6 +23,45 @@ router.get('/:id', async(req,res,next)=>{
     }
 })
 
+router.post('/', async(req,res,next)=>{
+    try{
+        
+        const recipe = req.body
+
+        const ingredients = {
+            item: req.body.ingredients
+        }
+        const instructions = {
+            step: req.body.instructions
+        }
+        console.log(ingredients.item.split(','))
+        ingredients.item.split(',').map(item => recipeModel.addIngredients(item))
+        res.json({message: 'ingredients added'})
+
+    }
+    catch(err){
+        next(err)
+    }
+})
+
+
+// router.post('/' async(req,res,next)=>{
+//     try{
+
+//     }
+//     catch(err){
+//         next(err)
+//     }
+// })
+
+// router.post('/' async(req,res,next)=>{
+//     try{
+
+//     }
+//     catch(err){
+//         next(err)
+//     }
+// })
 router.delete('/:id', async(req,res,next)=>{
     try{
         await recipeModel.remove(req.params.id)

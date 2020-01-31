@@ -1,7 +1,9 @@
 const db = require('../dbConfig')
 
 function getRecipes(){
-    return db('recipes')
+
+    // do your JOINS in her
+    return db('recipes') 
 }
 
 function getRecipesById(id){
@@ -21,10 +23,15 @@ async function updateRecipe(id, payload){
     await db('recipes').where({ id }).update(payload)
 }
 
+function addIngredients(ingredient){
+    return db('ingredients').insert({item: ingredient})
+}
+
 module.exports = {
     getRecipes,
     getRecipesById,
     addRecipe,
     remove,
-    updateRecipe
+    updateRecipe,
+    addIngredients
 }
