@@ -35,7 +35,8 @@ router.post('/', async(req,res,next)=>{
             step: req.body.instructions
         }
         console.log(ingredients.item.split(','))
-        ingredients.item.split(',').map(item => recipeModel.addIngredients(item))
+        // ingredients.item.split(',').map(item => recipeModel.addIngredients(item))
+        await recipeModel.addIngredients(ingredients.item)
         res.json({message: 'ingredients added'})
 
     }

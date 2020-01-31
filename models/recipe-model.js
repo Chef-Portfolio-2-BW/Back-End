@@ -23,8 +23,13 @@ async function updateRecipe(id, payload){
     await db('recipes').where({ id }).update(payload)
 }
 
-function addIngredients(ingredient){
-    return db('ingredients').insert({item: ingredient})
+async function addIngredients(ingredient){
+    console.log(ingredient)
+    // await db('ingredients').insert({item: ingredient})
+    ingredient.split(',').map(async ingred => await db('ingredients').insert({
+        item: ingred
+    }))
+    
 }
 
 module.exports = {
