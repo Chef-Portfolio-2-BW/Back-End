@@ -2,8 +2,11 @@ const db = require('../dbConfig')
 
 function getRecipes(){
 
-    // do your JOINS in her
-    return db('recipes') 
+    return db('recipes as r')
+    .join('users as u', 'u.id', 'r.userID')
+    .join('meal_type as m', 'r.mealID', 'm.id')
+    .select('r.id', 'r.name', 'r.img', 'm.type', 'u.username')
+
 }
 
 function getRecipesById(id){
@@ -23,7 +26,7 @@ async function updateRecipe(id, payload){
     await db('recipes').where({ id }).update(payload)
 }
 
-async function addIngredients(ingredient){
+function addIngredients(ingredient){
     console.log(ingredient)
     // await db('ingredients').insert({item: ingredient})
     ingredient.split(',').map(async ingred => await db('ingredients').insert({
