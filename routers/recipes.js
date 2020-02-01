@@ -25,8 +25,15 @@ router.get('/:id', async(req,res,next)=>{
 
 router.post('/', async(req,res,next)=>{
     try{
+
+        const [id] = await db('users')
         
-        const recipe = req.body
+        const recipe = {
+            name: req.body.name,
+            img: req.body.img,
+            mealID: req.body.category,
+            userID: req.body.userID
+        }
 
         const ingredients = {
             item: req.body.ingredients
@@ -34,8 +41,9 @@ router.post('/', async(req,res,next)=>{
         const instructions = {
             step: req.body.instructions
         }
-        console.log(ingredients.item.split(','))
-        // ingredients.item.split(',').map(item => recipeModel.addIngredients(item))
+
+
+
         await recipeModel.addIngredients(ingredients.item)
         res.json({message: 'ingredients added'})
 

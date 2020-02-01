@@ -4,7 +4,10 @@ const router = express.Router({
 })
 const db = require('../dbConfig')
 const userModel = require('../models/user-model')
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const restricted = require('../middleware/restricted')
+const secret = require('../config/secret')
 
 router.post('/register', async(req,res,next)=>{
     try{
@@ -23,7 +26,8 @@ router.post('/login', async(req,res,next)=>{
         const passwordValid = await bcrypt.compare(password, user.password)
 
         if(user && passwordValid){
-            res.status(200).json({message: `welcome, ${user.username}`})
+            const token = await generateToken(user)
+            res.status(200).json({message: `welcome, ${user.username}`, token: token})
         } else{
             res.status(401).json({message: 'unauthorized user'})
         }
@@ -33,5 +37,16 @@ router.post('/login', async(req,res,next)=>{
         next(err)
     }
 })
+
+function generateToken(user){
+    const payload = {
+        subject: user.id,
+        username: user.username,
+    }
+    const options = {
+        expiresIn: '1d',
+    }
+    return jwt.sign(payload, secret.jwtSecret, options)
+}
 
 module.exports = router
