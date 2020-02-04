@@ -19,6 +19,22 @@ router.get('/', async(req,res,next)=>{
     }
 })
 
+router.get('/myrecipes', async(req,res,next)=>{
+    try{
+        const token = req.headers.authorization
+        const username = jwt.decode(token, secret.jwtSecret)['username']
+
+        const [{id}] = await db('users').where({username}).select('id')
+        console.log(id)
+
+        res.json(await recipeModel.myRecipes(id))
+
+    }
+    catch(err){
+        next(err)
+    }
+})
+
 router.get('/:id', async(req,res,next)=>{
     try{
         res.json(await recipeModel.getRecipesById(req.params.id))

@@ -9,6 +9,10 @@ function getRecipes(){
 
 }
 
+function myRecipes(userID){
+    return db('recipes as r').where({userID})
+}
+
 function getRecipesById(id){
     return db('recipes').where({ id }).first()
 }
@@ -77,5 +81,6 @@ module.exports = {
     updateRecipe,
     addIngredients,
     addInstructions,
-    makeList
+    makeList,
+    myRecipes
 }
