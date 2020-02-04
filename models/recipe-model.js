@@ -13,8 +13,9 @@ function getRecipesById(id){
     return db('recipes').where({ id }).first()
 }
 
-async function addRecipe(payload){
+async function addRecipe(payload, ingredients){
     const [id] = await db('recipes').insert(payload)
+    await makeList(id, ingredients)
     return getRecipesById(id)
 }
 
@@ -28,12 +29,26 @@ async function updateRecipe(id, payload){
 
 function addIngredients(ingredient){
     console.log(ingredient)
-    // await db('ingredients').insert({item: ingredient})
     ingredient.split(',').map(async ingred => await db('ingredients').insert({
         item: ingred
-    }))
-    
+    })) 
 }
+
+function addInstructions(instruction){
+    instruction.split(',').map(async info => await db('instructions').insert({
+        step: info
+    }))
+}
+
+function makeList(recipeId, ingredientId){
+    return db('ingredients_list').insert({
+        recipeId: recipeId,
+        ingredientId: ingredientId
+    })
+}
+
+
+
 
 module.exports = {
     getRecipes,
@@ -41,5 +56,7 @@ module.exports = {
     addRecipe,
     remove,
     updateRecipe,
-    addIngredients
+    addIngredients,
+    addInstructions,
+    makeList
 }

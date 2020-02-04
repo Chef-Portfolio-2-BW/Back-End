@@ -4,6 +4,11 @@ const router = express.Router({
 })
 const db = require('../dbConfig')
 const recipeModel = require('../models/recipe-model')
+const restricted = require('../middleware/restricted')
+const jwt = require('jsonwebtoken')
+const secret = require('../config/secret')
+
+
 
 router.get('/', async(req,res,next)=>{
     try{
@@ -23,16 +28,18 @@ router.get('/:id', async(req,res,next)=>{
     }
 })
 
-router.post('/', async(req,res,next)=>{
+router.post('/', restricted, async(req,res,next)=>{
     try{
+        const token = req.headers.authorization
+        const username = jwt.decode(token, secret.jwtSecret)['username']
 
-        const [id] = await db('users')
-        
+        const [{id}] = await db('users').where({username}).select('id')
+ 
         const recipe = {
             name: req.body.name,
             img: req.body.img,
             mealID: req.body.category,
-            userID: req.body.userID
+            userID: id
         }
 
         const ingredients = {
@@ -42,10 +49,11 @@ router.post('/', async(req,res,next)=>{
             step: req.body.instructions
         }
 
-
-
+        await recipeModel.addRecipe(recipe, ingredients.item)
         await recipeModel.addIngredients(ingredients.item)
-        res.json({message: 'ingredients added'})
+        await recipeModel.addInstructions(instructions.step)
+
+        res.json({message: 'recipe added'})
 
     }
     catch(err){
@@ -54,23 +62,16 @@ router.post('/', async(req,res,next)=>{
 })
 
 
-// router.post('/' async(req,res,next)=>{
-//     try{
+router.put('/:id', async(req,res,next)=>{
+    try{
+        const payload = req.body
+        res.status(200).json(await recipeModel.updateRecipe(payload))
+    }
+    catch(err){
+        next(err)
+    }
+})
 
-//     }
-//     catch(err){
-//         next(err)
-//     }
-// })
-
-// router.post('/' async(req,res,next)=>{
-//     try{
-
-//     }
-//     catch(err){
-//         next(err)
-//     }
-// })
 router.delete('/:id', async(req,res,next)=>{
     try{
         await recipeModel.remove(req.params.id)

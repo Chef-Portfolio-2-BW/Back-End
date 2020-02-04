@@ -34,6 +34,7 @@ exports.up = async function(knex) {
             .references('id')
             .inTable('meal')
         tbl.string('img')
+
         
     })
 
