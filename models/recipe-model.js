@@ -13,9 +13,12 @@ function getRecipesById(id){
     return db('recipes').where({ id }).first()
 }
 
-async function addRecipe(payload, ingredients){
+async function addRecipe(payload, ingredients, instructions){
     const [id] = await db('recipes').insert(payload)
+    await addIngredients(ingredients)
+    await addInstructions(instructions)
     await makeList(id, ingredients)
+    await makeInstructions(id, instructions)
     return getRecipesById(id)
 }
 
@@ -27,6 +30,7 @@ async function updateRecipe(id, payload){
     await db('recipes').where({ id }).update(payload)
 }
 
+
 function addIngredients(ingredient){
     console.log(ingredient)
     ingredient.split(',').map(async ingred => await db('ingredients').insert({
@@ -35,15 +39,30 @@ function addIngredients(ingredient){
 }
 
 function addInstructions(instruction){
-    instruction.split(',').map(async info => await db('instructions').insert({
-        step: info
-    }))
+    return db('instructions').insert({
+        step: instruction
+    })
 }
 
-function makeList(recipeId, ingredientId){
-    return db('ingredients_list').insert({
+async function makeInstructions(recipeId, step){
+    const [{ id }] = await db('instructions').where({step}).select('id')
+    console.log(step)
+    await db('instructions_list').insert({
         recipeId: recipeId,
-        ingredientId: ingredientId
+        instructionId: id
+    })
+}
+
+async function makeList(recipeId, ingredients){
+    console.log(ingredients)
+    ingredients.split(',').map(async item => {
+        console.log(item)
+        const [{ id }]=  await db('ingredients').where({item}).select('id')
+        console.log('ingredient ID in makelist: ', id)
+        await db('ingredients_list').insert({
+            recipeId: recipeId,
+            ingredientId: id
+        })
     })
 }
 

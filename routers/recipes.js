@@ -49,9 +49,7 @@ router.post('/', restricted, async(req,res,next)=>{
             step: req.body.instructions
         }
 
-        await recipeModel.addRecipe(recipe, ingredients.item)
-        await recipeModel.addIngredients(ingredients.item)
-        await recipeModel.addInstructions(instructions.step)
+        await recipeModel.addRecipe(recipe, ingredients.item, instructions.step)
 
         res.json({message: 'recipe added'})
 
