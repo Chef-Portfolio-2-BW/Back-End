@@ -19,7 +19,7 @@ router.get('/', async(req,res,next)=>{
     }
 })
 
-router.get('/myrecipes', async(req,res,next)=>{
+router.get('/myrecipes', restricted, async(req,res,next)=>{
     try{
         const token = req.headers.authorization
         const username = jwt.decode(token, secret.jwtSecret)['username']
@@ -44,7 +44,7 @@ router.get('/:id', async(req,res,next)=>{
     }
 })
 
-router.get('/:id/ingredients', async(req,res,next)=>{
+router.get('/:id/ingredients', restricted, async(req,res,next)=>{
     try{
         res.json(await recipeModel.getIngredients(req.params.id))
     }
@@ -53,7 +53,7 @@ router.get('/:id/ingredients', async(req,res,next)=>{
     }
 })
 
-router.get('/:id/instructions', async(req,res,next)=>{
+router.get('/:id/instructions', restricted, async(req,res,next)=>{
     try{
         res.json(await recipeModel.getInstructions(req.params.id))
     }
@@ -94,7 +94,7 @@ router.post('/', restricted, async(req,res,next)=>{
 })
 
 
-router.put('/:id', async(req,res,next)=>{
+router.put('/:id', restricted, async(req,res,next)=>{
     try{
         const recipe = {
             name: req.body.name,
