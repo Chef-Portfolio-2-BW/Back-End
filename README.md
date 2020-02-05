@@ -22,6 +22,14 @@ GET REQUESTS
     - While logged in, user can view all of their recipes that they have posted
     - Get request will have to have an Authorization header which includes token in order to view these recipes
 
+- Get instructions associated with a recipe: https://bwchefhub.herokuapp.com/api/recipes/:id/instructions
+    - user can view instructions associated with a recipe
+    - user will receive a JSON object with recipe name and instruction
+
+- Get ingredients associated with a recipe: https://bwchefhub.herokuapp.com/api/recipes/:id/ingredients
+    - user can view ingredients associated with a recipe
+    - user will receive a JSON object with recipe name and ingredients 
+
 POST REQUESTS
 
 - Registering a new user: https://bwchefhub.herokuapp.com/api/auth/register
