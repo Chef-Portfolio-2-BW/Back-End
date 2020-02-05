@@ -44,7 +44,7 @@ router.get('/:id', async(req,res,next)=>{
     }
 })
 
-router.get('/:id/ingredients', restricted, async(req,res,next)=>{
+router.get('/:id/ingredients', async(req,res,next)=>{
     try{
         res.json(await recipeModel.getIngredients(req.params.id))
     }
@@ -53,7 +53,7 @@ router.get('/:id/ingredients', restricted, async(req,res,next)=>{
     }
 })
 
-router.get('/:id/instructions', restricted, async(req,res,next)=>{
+router.get('/:id/instructions', async(req,res,next)=>{
     try{
         res.json(await recipeModel.getInstructions(req.params.id))
     }

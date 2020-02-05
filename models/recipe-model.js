@@ -91,7 +91,6 @@ async function updateInstructions(recipeId, instructions){
 async function makeList(recipeId, ingredients){
     console.log(ingredients)
     ingredients.split(',').map(async item => {
-        console.log(item)
         const [{ id }]=  await db('ingredients').where({item}).select('id')
         console.log('ingredient ID in makelist: ', id)
         await db('ingredients_list').insert({
