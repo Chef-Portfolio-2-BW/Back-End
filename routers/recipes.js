@@ -44,6 +44,24 @@ router.get('/:id', async(req,res,next)=>{
     }
 })
 
+router.get('/:id/ingredients', async(req,res,next)=>{
+    try{
+        res.json(await recipeModel.getIngredients(req.params.id))
+    }
+    catch(err){
+        next(err)
+    }
+})
+
+router.get('/:id/instructions', async(req,res,next)=>{
+    try{
+        res.json(await recipeModel.getInstructions(req.params.id))
+    }
+    catch(err){
+        next(err)
+    }
+})
+
 router.post('/', restricted, async(req,res,next)=>{
     try{
         const token = req.headers.authorization
@@ -78,8 +96,22 @@ router.post('/', restricted, async(req,res,next)=>{
 
 router.put('/:id', async(req,res,next)=>{
     try{
-        const payload = req.body
-        res.status(200).json(await recipeModel.updateRecipe(payload))
+        const recipe = {
+            name: req.body.name,
+            img: req.body.img,
+            mealID: req.body.category,
+        }
+
+        const ingredients = {
+            item: req.body.ingredients
+        }
+        const instructions = {
+            step: req.body.instructions
+        }
+        await recipeModel.updateRecipe(req.params.id,recipe, instructions.step)
+        await recipeModel.updateIngredients(req.params.id, ingredients.item)
+
+        res.json({message: 'recipe updated'})
     }
     catch(err){
         next(err)
