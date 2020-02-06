@@ -54,7 +54,6 @@ async function updateRecipe(id, recipe, instructions){
 
 
 function addIngredients(ingredient){
-    console.log(ingredient)
     ingredient.split(',').map(async ingred => await db('ingredients').insert({
         item: ingred
     })) 
@@ -75,7 +74,6 @@ function addInstructions(instruction){
 
 async function makeInstructions(recipeId, step){
     const [{ id }] = await db('instructions').where({step}).select('id')
-    console.log(step)
     await db('instructions_list').insert({
         recipeId: recipeId,
         instructionId: id
@@ -89,10 +87,8 @@ async function updateInstructions(recipeId, instructions){
 }
 
 async function makeList(recipeId, ingredients){
-    console.log(ingredients)
     ingredients.split(',').map(async item => {
         const [{ id }]=  await db('ingredients').where({item}).select('id')
-        console.log('ingredient ID in makelist: ', id)
         await db('ingredients_list').insert({
             recipeId: recipeId,
             ingredientId: id

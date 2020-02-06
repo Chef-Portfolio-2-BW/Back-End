@@ -12,7 +12,7 @@ const secret = require('../config/secret')
 
 router.get('/', async(req,res,next)=>{
     try{
-        res.json(await recipeModel.getRecipes())
+        res.status(200).json(await recipeModel.getRecipes())
     }
     catch(err){
         next(err)
@@ -85,7 +85,7 @@ router.post('/', restricted, async(req,res,next)=>{
 
         await recipeModel.addRecipe(recipe, ingredients.item, instructions.step)
 
-        res.json({message: 'recipe added'})
+        res.status(200).json({message: 'recipe added'})
 
     }
     catch(err){
@@ -111,7 +111,7 @@ router.put('/:id', restricted, async(req,res,next)=>{
         await recipeModel.updateRecipe(req.params.id,recipe, instructions.step)
         await recipeModel.updateIngredients(req.params.id, ingredients.item)
 
-        res.json({message: 'recipe updated'})
+        res.status(200).json({message: 'recipe updated'})
     }
     catch(err){
         next(err)
