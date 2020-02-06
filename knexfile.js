@@ -1,7 +1,4 @@
-// Update with your config settings.
-require('dotenv').config();
-const dbConnection = process.env.DATABASE_URL
-
+// Update with your config settings
 module.exports = {
 
   development: {
