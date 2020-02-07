@@ -36,19 +36,10 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
+    client: 'sqlite3',
+    useNullAsDefault: true,
     connection: {
-      database: 'd39nff8qu8n880',
-      user:     'jhhqkobuszdqit',
-      password: '3a0572eef1d64e43240f86a5628931e605b808b45ba82232ef87bc816b304933'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
+      filename: './recipes.db3'
     }
-  }
 
 };
