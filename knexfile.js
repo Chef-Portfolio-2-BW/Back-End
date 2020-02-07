@@ -39,7 +39,9 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './recipes.db3'
+      database: 'd39nff8qu8n880',
+      user:     'jhhqkobuszdqit',
+      password: '3a0572eef1d64e43240f86a5628931e605b808b45ba82232ef87bc816b304933'
     },
     pool: {
       min: 2,
