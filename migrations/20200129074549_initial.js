@@ -23,7 +23,7 @@ exports.up = async function(knex) {
     })
 
     await knex.schema.createTable('recipes', tbl=>{
-        tbl.increments()
+        tbl.increments('recId')
         tbl.integer('userID')
             .notNullable()
             .references('id')

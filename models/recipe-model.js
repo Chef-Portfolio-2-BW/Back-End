@@ -13,8 +13,12 @@ function myRecipes(userID){
     return db('recipes as r').where({userID})
 }
 
-function getRecipesById(id){
-    return db('recipes').where({ id }).first()
+function getRecipesById(recId){
+    return db('recipes as r').where({ recId })
+        .join('users as u', 'u.id', 'r.userID')
+        .join('meal_type as m', 'r.mealID', 'm.id')
+        .select('r.recId', 'r.name', 'r.img', 'm.type', 'u.username')
+    
 }
 
 function getIngredients(recipeId){
