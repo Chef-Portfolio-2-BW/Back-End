@@ -41,5 +41,6 @@ module.exports = {
     connection: {
       filename: './recipes.db3'
     }
+  }
 
 };
